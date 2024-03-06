@@ -7,7 +7,7 @@ int main() {
     fgets(str, 80, stdin);
 
     for (int i = 0; i < 80; i++) {
-        if (str[i] == 'a' || str[i] == 'b') {
+        if (str[i] == '!' || str[i] == '?') {
             str[i] = toupper(str[i]);
         }
     }
