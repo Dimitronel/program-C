@@ -31,7 +31,7 @@ double *  *  calculateMatrixOperation(double *  *  matrix1, double *  *  matrix2
                     result[i][j] = matrix1[i][j]  *  matrix2[i][j];
                     break;
                 default:
-                    printf("Неверный знак операции.\n");
+                    printf("Neverny znak.\n");
                     freeMatrix(result, n);
                     return NULL;
             }
@@ -42,7 +42,7 @@ double *  *  calculateMatrixOperation(double *  *  matrix1, double *  *  matrix2
 
 int main() {
     int n;
-    printf("Введите размерность матрицы: ");
+    printf("Vvod ramera matrix: ");
     scanf("%d", &n);
 
     double *  *  matrix1 = allocateMatrix(n);
@@ -50,14 +50,14 @@ int main() {
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            printf("Введите элемент матрицы [%d][%d]: ", i, j);
+            printf("Vvedite element martrix [%d][%d]: ", i, j);
             scanf("%lf", &matrix1[i][j]);
             matrix2[i][j] = matrix1[i][j];
         }
     }
 
     char operation;
-    printf("Введите знак операции: ");
+    printf("Vvod znaka operation: ");
     scanf(" %c", &operation);
 
     double *  *  result = calculateMatrixOperation(matrix1, matrix2, operation, n);
