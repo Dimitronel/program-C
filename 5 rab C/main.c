@@ -42,7 +42,7 @@ double *  *  calculateMatrixOperation(double *  *  matrix1, double *  *  matrix2
 
 int main() {
     int n;
-    printf("Vvod ramera matrix: ");
+    printf("Vvod razmer matrix: ");
     scanf("%d", &n);
 
     double *  *  matrix1 = allocateMatrix(n);
