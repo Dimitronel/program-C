@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int findMax(int arr[], int size) {
+    int maxVal = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}
+
+int main() {
+    char line[1024];
+    printf("Vvod chisel: ");
+    fgets(line, sizeof(line), stdin);
+
+    line[strcspn(line, "n")] = 0;
+
+    int numbers[1024];
+    int numberCount = 0;
+
+    char *token = strtok(line, " ");
+    while (token != NULL && numberCount < 1024) {
+        numbers[numberCount++] = atoi(token);
+        token = strtok(NULL, " ");
+    }
+
+    int maxNumber = findMax(numbers, numberCount);
+
+    
+    if (toupper(line[strlen(line) - 1]) == 'N') {
+        printf("Maks chuslo: %dn", maxNumber);
+    } else {
+        printf("Maks chuslo1: %d", maxNumber);
+    }
+
+    return 0;
+}
