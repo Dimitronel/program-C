@@ -1,32 +1,33 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main() {
-    FILE  * input_file,  * output_file;
-    char line[100];
+    FILE *fileInput, *fileOutput;
+    char name[50];
     int year;
 
-    input_file = fopen("input.txt", "r");
-    if (input_file == NULL) {
-        printf("Ошибка открытия файла.\n");
+    fileInput = fopen("input.txt", "r");
+    if (fileInput == NULL) {
+        printf("Не удается открыть файл для чтенияn");
         return 1;
     }
 
-    output_file = fopen("output.txt", "w");
-    if (output_file == NULL) {
-        printf("Ошибка открытия файла.\n");
-        fclose(input_file);
+    fileOutput = fopen("output.txt", "w");
+    if (fileOutput == NULL) {
+        printf("Не удается открыть файл для записиn");
         return 1;
     }
 
-    while (fgets(line, sizeof(line), input_file) != NULL) {
-        sscanf(line, "%s %s %s %d", NULL, NULL, NULL, &year);
+    while (fscanf(fileInput, "%s %s %s %d", name, name, name, &year) == 4) {
         if (year > 1980) {
-            fprintf(output_file, "%s\n", line);
+            fprintf(fileOutput, "%s %s %s %d\n", name, name, name, year); // каждое значение на отдельной строке
         }
     }
 
-    fclose(input_file);
-    fclose(output_file);
+    fclose(fileInput);
+    fclose(fileOutput);
+
+    printf("Программа завершена. Проверьте файл output.txtn");
 
     return 0;
 }
