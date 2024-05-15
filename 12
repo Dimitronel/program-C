@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <time.h>
+
+// Функция для определения дня недели по заданной дате
+void dayOfWeek(int year, int month, int day) {
+    struct tm timeStruct = {0};
+    
+    timeStruct.tm_year = year - 1900;
+    timeStruct.tm_mon = month - 1;
+    timeStruct.tm_mday = day;
+    
+    mktime(&timeStruct);
+
+    const char *daysOfWeek[] = {"Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
+    
+    printf("День недели: %sn", daysOfWeek[timeStruct.tm_wday]);
+}
+
+// Функция для вывода календаря за заданный месяц
+void printMonthCalendar(int year, int month) {
+    struct tm timeStruct = {0};
+    
+    timeStruct.tm_year = year - 1900;
+    timeStruct.tm_mon = month - 1;
+    timeStruct.tm_mday = 1;
+    
+    mktime(&timeStruct);
+    
+    int dayOfWeek = timeStruct.tm_wday;
+    int daysInMonth;
+    
+    switch (month) {
+        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+            daysInMonth = 31;
+            break;
+            
+        case 4: case 6: case 9: case 11:
+            daysInMonth = 30;
+            break;
+            
+        case 2:
+            if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+                daysInMonth = 29;
+            else
+                daysInMonth = 28;
+            break;
+    }
+    
+    printf("   %d %dn", month, year);
+    printf("Пн Вт Ср Чт Пт Сб Вс n");
+    
+    for (int i = 0; i < dayOfWeek; i++)
+        printf("   ");
+    
+    for (int day = 1; day <= daysInMonth; day++) {
+        printf("%2d ", day);
+        if (++dayOfWeek > 6) {
+            dayOfWeek = 0;
+            printf("n");
+        }
+    }
+    printf("n");
+}
+
+int main() {
+    time_t now = time(NULL);
+    struct tm *current = localtime(&now);
+    
+    int year, month, day;
+    char command[10];
+
+    printf("Введите команду (гггг.мм.дд, гггг.мм, гггг, now): ");
+    scanf("%s", command);
+    
+    if (strcmp(command, "now") == 0) {
+        printf("Текущая дата: %d.%02d.%02dn", current->tm_year + 1900, current->tm_mon + 1, current->tm_mday);
+    } else if (sscanf(command, "%d.%d.%d", &year, &month, &day) == 3) {
+        dayOfWeek(year, month, day);
+    } else if (sscanf(command, "%d.%d", &year, &month) == 2) {
+        printMonthCalendar(year, month);
+    } else if (sscanf(command, "%d", &year) == 1) {
+        for (int i = 1; i <= 12; i++) {
+            printMonthCalendar(year, i);
+            printf("n");
+        }
+    } else {
+        printf("Неверный формат команды.n");
+    }
+    
+    return 0;
+}
