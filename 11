@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Структура для хранения суммы, максимума, минимума и среднего арифметического
+typedef struct {
+    double sum;
+    double max;
+    double min;
+    double avg;
+} Summary;
+
+// Функция для вычисления суммы, максимума, минимума и среднего арифметического
+Summary calculate_summary(double values[], int count) {
+    Summary result;
+    result.sum = 0;
+    result.max = values[0];
+    result.min = values[0];
+    for (int i = 1; i < count; ++i) {
+        result.sum += values[i];
+        if (values[i] > result.max) {
+            result.max = values[i];
+        }
+        if (values[i] < result.min) {
+            result.min = values[i];
+        }
+    }
+    result.avg = result.sum / count;
+    return result;
+}
+
+int main() {
+    int n;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    double values[n];
+    printf("Enter the elements:\n");
+    for (int i = 0; i < n; ++i) {
+        scanf("%lf", &values[i]);
+    }
+
+    Summary summary = calculate_summary(values, n);
+
+    printf("Sum: %.2f\n", summary.sum);
+    printf("Max: %.2f\n", summary.max);
+    printf("Min: %.2f\n", summary.min);
+    printf("Avg: %.2f\n", summary.avg);
+
+    return 0;
+}
