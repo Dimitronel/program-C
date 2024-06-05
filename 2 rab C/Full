@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int N;
+    printf("Введите кол чисел д: ");
+    scanf("%d", &N);
+
+    // Генерация N случайных чисел и запись их в файл input.txt
+    FILE *file = fopen("input.txt", "w");
+    if (file == NULL) {
+        perror("Ошибка input.txt");
+        exit(EXIT_FAILURE);
+    }
+
+    // Генерируем и записываем N случайных чисел в файл
+    srand(time(NULL));
+    for (int i = 0; i < N; i++) {
+        int random_number = rand() % 100; // Генерируем случайное число от 0 до 99
+        fprintf(file, "%d ", random_number);
+    }
+
+    fclose(file);
+
+    // Открытие файла input.txt для чтения и обработки чисел
+    file = fopen("input.txt", "r");
+    if (file == NULL) {
+        perror("Ошибка  input.txt ");
+        exit(EXIT_FAILURE);
+    }
+
+    // Формирование матрицы из вектора и подсчёт сумм строк и столбцов
+    int M = N / 2; // Количество столбцов
+    int matrix[M][2]; // Матрица Mx2
+
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (fscanf(file, "%d", &matrix[i][j]) != 1) {
+                break;
+            }
+        }
+    }
+
+   int row_sum[M];
+for (int i = 0; i < M; i++) {
+    row_sum[i] = 0;
+}
+    int col_sum[2] = {0};
+
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < 2; j++) {
+            row_sum[i] += matrix[i][j];
+            col_sum[j] += matrix[i][j];
+        }
+    }
+
+    // Вывод матрицы и сумм на экран
+    printf("Матрица %dx2 из  input.txt:\n", M);
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < 2; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Суммы строк:\n");
+    for (int i = 0; i < M; i++) {
+        printf("Строка %d: %d\n", i+1, row_sum[i]);
+    }
+
+    printf("Суммы столбцов:\n");
+    for (int j = 0; j < 2; j++) {
+        printf("Столбец %d: %d\n", j+1, col_sum[j]);
+    }
+
+    fclose(file);
+
+    // Замер времени и вывод на экран
+    clock_t start = clock();
+
+    /* Ваша обработка данных */
+
+    clock_t end = clock();
+    double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("Время выполнения программы: %f сек\n", time_spent);
+
+    return 0;
+}
+
+
