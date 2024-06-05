@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void generate_random_matrix(int rows, int cols, int matrix[rows][cols]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = rand() % 10; // Генерируем случайное число от 0 до 9
+        }
+    }
+}
+
+void multiply_matrices(int rows1, int cols1, int matrix1[rows1][cols1], int rows2, int cols2, int matrix2[rows2][cols2], int result[rows1][cols2]) {
+    // Реализация умножения матриц
+}
+
+void add_matrices(int rows, int cols, int matrix1[rows][cols], int matrix2[rows][cols], int result[rows][cols]) {
+    // Реализация сложения матриц
+}
+
+int main() {
+    int rows, cols;
+    printf("Введите количество строк: ");
+    scanf("%d", &rows);
+    printf("Введите количество столбцов: ");
+    scanf("%d", &cols);
+
+    int matrix1[rows][cols];
+    int matrix2[rows][cols];
+    int result_mul[rows][cols];
+    int result_add[rows][cols];
+
+    FILE *file = fopen("input.txt", "r");
+    if (file == NULL) {
+        perror("Ошибка при открытии файла");
+        return 1;
+    }
+
+    // Чтение матриц из файла
+    printf("Чтение матриц из файла...\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            fscanf(file, "%d", &matrix1[i][j]);
+        }
+    }
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            fscanf(file, "%d", &matrix2[i][j]);
+        }
+    }
+
+    fclose(file);
+
+    // Выполнение операций над матрицами
+    multiply_matrices(rows, cols, matrix1, rows, cols, matrix2, result_mul);
+    add_matrices(rows, cols, matrix1, matrix2, result_add);
+
+    // Запись результатов в файл
+    FILE *output_file = fopen("output.txt", "w");
+    if (output_file == NULL) {
+        perror("Ошибка при открытии файла для записи результатов");
+        return 1;
+    }
+
+    fprintf(output_file, "Результат умножения матриц:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            fprintf(output_file, "%d ", result_mul[i][j]);
+        }
+        fprintf(output_file, "\n");
+    }
+
+    fprintf(output_file, "\nРезультат сложения матриц:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            fprintf(output_file, "%d ", result_add[i][j]);
+        }
+        fprintf(output_file, "\n");
+    }
+
+    fclose(output_file);
+
+    // Замер времени работы программы
+    clock_t start_time = clock();
+    // Выполнение других операций
+    clock_t end_time = clock();
+    double execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("Время выполнения программы: %f секунд\n", execution_time);
+
+    return 0;
+}
