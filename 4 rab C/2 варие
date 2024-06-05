@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void generate_random_matrix(int rows, int cols, int matrix[rows][cols]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = rand() % 10; // Генерируем случайное число от 0 до 9
+        }
+    }
+}
+
+int find_min_element(int rows, int cols, int matrix[rows][cols], int *min_row, int *min_col) {
+    int min = matrix[0][0];
+    *min_row = 0;
+    *min_col = 0;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] < min) {
+                min = matrix[i][j];
+                *min_row = i;
+                *min_col = j;
+            }
+        }
+    }
+
+    return min;
+}
+
+int count_odd_numbers(int rows, int cols, int matrix[rows][cols]) {
+    int count = 0;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] % 2 != 0) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int rows, cols;
+    printf("Введите количество строк: ");
+    scanf("%d", &rows);
+    printf("Введите количество столбцов: ");
+    scanf("%d", &cols);
+
+    int matrix[rows][cols];
+    int min_row, min_col;
+    
+    generate_random_matrix(rows, cols, matrix);
+    
+    int min_element = find_min_element(rows, cols, matrix, &min_row, &min_col);
+    int odd_count = count_odd_numbers(rows, cols, matrix);
+
+    printf("Минимальный элемент: %d (находится в строке %d, столбце %d)\n", min_element, min_row, min_col);
+    printf("Количество нечетных чисел в матрице: %d\n", odd_count);
+    
+    return 0;
+}
