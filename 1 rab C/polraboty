@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void generate_random_matrix(int rows, int cols, int matrix[rows][cols]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] = rand() % 10; 
+        }
+    }
+}
+
+void multiply_matrices(int rows1, int cols1, int matrix1[rows1][cols1], int rows2, int cols2, int matrix2[rows2][cols2], int result[rows1][cols2]) {
+   
+}
+
+void add_matrices(int rows, int cols, int matrix1[rows][cols], int matrix2[rows][cols], int result[rows][cols]) {
+
+}
+
+int main() {
+    int rows, cols;
+    printf("Введите кол строк: ");
+    scanf("%d", &rows);
+    printf("Введите кол столбцов: ");
+    scanf("%d", &cols);
+
+    int matrix1[rows][cols];
+    int matrix2[rows][cols];
+    int result_mul[rows][cols];
+    int result_add[rows][cols];
+
+    FILE *file = fopen("input.txt", "w");
+    if (file == NULL) {
+        perror("Ошибка");
+        return 1;
+    }
+
+    generate_random_matrix(rows, cols, matrix1);
+    generate_random_matrix(rows, cols, matrix2);
+
+    fprintf(file, "Матриц 1:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            fprintf(file, "%d ", matrix1[i][j]);
+        }
+        fprintf(file, "\n");
+    }
+
+    fprintf(file, "\nМатриц 2:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            fprintf(file, "%d ", matrix2[i][j]);
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+
+
+    return 0;
+}
+
