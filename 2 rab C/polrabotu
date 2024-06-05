@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int N;
+    printf("Введите к чисел для генера: ");
+    scanf("%d", &N);
+
+    // Генерация N случайных чисел и запись их в файл input.txt
+    FILE *file = fopen("input.txt", "w");
+    if (file == NULL) {
+        perror("Ошибка input.txt");
+        exit(EXIT_FAILURE);
+    }
+
+    // Генерируем и записываем N случайных чисел в файл
+    srand(time(NULL));
+    for (int i = 0; i < N; i++) {
+        int random_number = rand() % 100; // Генерируем случайное число от 0 до 99
+        fprintf(file, "%d ", random_number);
+    }
+
+    fclose(file);
+
+    // Открытие файла input.txt для чтения и обработки чисел
+    file = fopen("input.txt", "r");
+    if (file == NULL) {
+        perror("Ошибка п input.txt ");
+        exit(EXIT_FAILURE);
+    }
+
+    // Создание файла output.txt и запись обработанных чисел
+    FILE *output_file = fopen("output.txt", "w");
+    if (output_file == NULL) {
+        perror("Ошибка п output.txt ");
+        exit(EXIT_FAILURE);
+    }
+
+    int number;
+    while (fscanf(file, "%d", &number) == 1) {
+        if (number % 5 == 0 && number % 7 == 0) {
+            fprintf(output_file, "ПятьСемь ");
+        } else if (number % 5 == 0) {
+            fprintf(output_file, "Пять ");
+        } else if (number % 7 == 0) {
+            fprintf(output_file, "Семь ");
+        } else {
+            fprintf(output_file, "%d ", number);
+        }
+    }
+
+    fclose(file);
+    fclose(output_file);
+
+    printf("Обработанные числа\n");
+
+    return 0;
+}
