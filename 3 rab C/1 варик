@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_SIZE 9
+#define MIN_SIZE 1
+
+// Function to create a square matrix of size m*m with random numbers from 0 to 9
+void createRandomMatrix(int m, int matrix[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = rand() % 10;  // generating a random number from 0 to 9
+        }
+    }
+}
+
+int mainFunction() {
+    srand(time(NULL));  // initializing the random number generator
+
+    FILE *inputFile = fopen("input.txt", "r");
+    FILE *outputFile = fopen("output.txt", "w");
+
+    int date1, date2;
+    fscanf(inputFile, "%d %d", &date1, &date2);
+
+    int m; 
+    int matrix[MAX_SIZE][MAX_SIZE];
+
+    do {
+        m = MIN_SIZE + rand() % (MAX_SIZE - MIN_SIZE + 1); // Random matrix size from MIN_SIZE to MAX_SIZE
+        createRandomMatrix(m, matrix);
+
+        // Calculating the sum of all elements in the matrix
+        int sum = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                sum += matrix[i][j];
+            }
+        }
+
+        // Writing the matrix and sum to output.txt
+        fprintf(outputFile, "Matrix size: %dx%d\n", m, m);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                fprintf(outputFile, "%d ", matrix[i][j]);
+            }
+            fprintf(outputFile, "\n");
+        }
+        fprintf(outputFile, "Sum of all elements: %d\n", sum);
+
+        // Calculating the number of days until the date
+        int days_until_date = date2 - date1;
+        if (days_until_date < 0) {
+            days_until_date *= -1; // Если date2 перед date1, умножаем на -1, чтобы получить положительное значение
+        }
+        fprintf(outputFile, "Days until date: %d\n", days_until_date);
+
+    } while (date1 < date2);
+
+    fclose(inputFile);
+    fclose(outputFile);
+
+    return 0;
+}
+
+int main() {
+    return mainFunction();
+}
+
+
