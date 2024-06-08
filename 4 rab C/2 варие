@@ -46,30 +46,47 @@ int main() {
     createRandomMatrix(m, matrix2);
 
     int resultMultiply[MAX_SIZE][MAX_SIZE], resultAdd[MAX_SIZE][MAX_SIZE];
-    
+
+    clock_t start_time = clock(); // Начинаем отсчёт времени
+
     // Перемножение матриц
     multiplyMatrices(m, matrix1, matrix2, resultMultiply);
     
     // Сложение матриц
     addMatrices(m, matrix1, matrix2, resultAdd);
 
-    // Печать результатов
-    printf("Результат умножения матриц:\n");
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < m; j++) {
-            printf("%d ", resultMultiply[i][j]);
-        }
-        printf("\n");
+    clock_t end_time = clock(); // Заканчиваем отсчёт времени
+
+    float total_time = (float)(end_time - start_time) / CLOCKS_PER_SEC; // Вычисляем общее время выполнения программы
+
+    // Запись результатов в файл
+    FILE *outputFile = fopen("output.txt", "w");
+    if (outputFile == NULL) {
+        printf("Ошибка при открытии файла");
+        return 1;
     }
 
-    printf("\nРезультат сложения матриц:\n");
+    // Запись результата умножения матриц
+    fprintf(outputFile, "Результат умножения матриц:\n");
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < m; j++) {
-            printf("%d ", resultAdd[i][j]);
+            fprintf(outputFile, "%d ", resultMultiply[i][j]);
         }
-        printf("\n");
+        fprintf(outputFile, "\n");
     }
+
+    // Запись результата сложения матриц
+    fprintf(outputFile, "\nРезультат сложения матриц:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            fprintf(outputFile, "%d ", resultAdd[i][j]);
+        }
+        fprintf(outputFile, "\n");
+    }
+
+    fclose(outputFile);
+
+    printf("Время выполнения программы: %.6f секунд\n", total_time);
 
     return 0;
 }
-
