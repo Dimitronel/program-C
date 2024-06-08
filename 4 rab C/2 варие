@@ -2,63 +2,74 @@
 #include <stdlib.h>
 #include <time.h>
 
-void generate_random_matrix(int rows, int cols, int matrix[rows][cols]) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            matrix[i][j] = rand() % 10; // Генерируем случайное число от 0 до 9
+#define MAX_SIZE 10
+
+// Функция для создания случайной матрицы размером m * m
+void createRandomMatrix(int m, int matrix[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = rand() % 10;  // Генерация случайного числа от 0 до 9
         }
     }
 }
 
-int find_min_element(int rows, int cols, int matrix[rows][cols], int *min_row, int *min_col) {
-    int min = matrix[0][0];
-    *min_row = 0;
-    *min_col = 0;
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            if (matrix[i][j] < min) {
-                min = matrix[i][j];
-                *min_row = i;
-                *min_col = j;
+// Функция для перемножения двух матриц
+void multiplyMatrices(int m, int mat1[MAX_SIZE][MAX_SIZE], int mat2[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < m; k++) {
+                result[i][j] += mat1[i][k] * mat2[k][j];
             }
         }
     }
-
-    return min;
 }
 
-int count_odd_numbers(int rows, int cols, int matrix[rows][cols]) {
-    int count = 0;
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            if (matrix[i][j] % 2 != 0) {
-                count++;
-            }
+// Функция для сложения двух матриц
+void addMatrices(int m, int mat1[MAX_SIZE][MAX_SIZE], int mat2[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            result[i][j] = mat1[i][j] + mat2[i][j];
         }
     }
-
-    return count;
 }
 
 int main() {
-    int rows, cols;
-    printf("Введите количество строк: ");
-    scanf("%d", &rows);
-    printf("Введите количество столбцов: ");
-    scanf("%d", &cols);
+    srand(time(NULL));  // Инициализация генератора случайных чисел
 
-    int matrix[rows][cols];
-    int min_row, min_col;
-    
-    generate_random_matrix(rows, cols, matrix);
-    
-    int min_element = find_min_element(rows, cols, matrix, &min_row, &min_col);
-    int odd_count = count_odd_numbers(rows, cols, matrix);
+    int m;
+    printf("Введите размер матрицы (не более %d): ", MAX_SIZE);
+    scanf("%d", &m);
 
-    printf("Минимальный элемент: %d (находится в строке %d, столбце %d)\n", min_element, min_row, min_col);
-    printf("Количество нечетных чисел в матрице: %d\n", odd_count);
+    int matrix1[MAX_SIZE][MAX_SIZE], matrix2[MAX_SIZE][MAX_SIZE];
+    createRandomMatrix(m, matrix1);
+    createRandomMatrix(m, matrix2);
+
+    int resultMultiply[MAX_SIZE][MAX_SIZE], resultAdd[MAX_SIZE][MAX_SIZE];
     
+    // Перемножение матриц
+    multiplyMatrices(m, matrix1, matrix2, resultMultiply);
+    
+    // Сложение матриц
+    addMatrices(m, matrix1, matrix2, resultAdd);
+
+    // Печать результатов
+    printf("Результат умножения матриц:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            printf("%d ", resultMultiply[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nРезультат сложения матриц:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            printf("%d ", resultAdd[i][j]);
+        }
+        printf("\n");
+    }
+
     return 0;
 }
+
